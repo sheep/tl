@@ -231,7 +231,11 @@ function ssh-shutdown()
 
     tgt-helper addr
 
-    ssh-cmd "shutdown -h now"
+    if ssh-cmd "shutdown -h now"; then
+      :
+    else
+      fail "ssh command for shutdown failed with $? return value"
+    fi
 }
 
 function display-tunnel()
