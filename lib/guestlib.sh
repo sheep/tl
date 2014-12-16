@@ -47,7 +47,19 @@ function vm-wait-ip()
     fi
 
     # host inherited
-    ret_vm_ip=$(ssh-cmd "tl/sut/arp-get-ip ${vm_mac}")
+    if ret_vm_ip=$(ssh-cmd "tl/sut/arp-get-ip ${vm_mac}"); then
+      :
+    else
+      case $? in
+        127)
+          fail "~/tl/sut/arp-get-ip appear to be missing on $host"
+          ;;
+        0) ;;
+        *)
+          fail "Something want wrong on when calling tl/sut/arp-get-ip on $host"
+          ;;
+      esac
+    fi
 
     info $vm_name ip $ret_vm_ip
 }
