@@ -308,8 +308,10 @@ function ssh-ready()
 
     tgt-helper addr
 
-    info "Attempting ssh connect to addr ${tgt_addr} timeout ${cfg_timeout_ssh}"
-    if ! wait-for-port host=${tgt_addr} timeout=${cfg_timeout_ssh} interval=1 port=22 ; then
+    local timeout=${timeout:-$cfg_timeout_ssh}
+
+    info "Attempting ssh connect to addr ${tgt_addr} timeout ${timeout}"
+    if ! wait-for-port host=${tgt_addr} timeout=${timeout} interval=1 port=22 ; then
 	error "Waiting for SSH to appear"
 	return 1;
     fi
@@ -328,8 +330,10 @@ function tgt-ssh()
 
     tgt-helper addr
 
-    info "Attempting ssh connect to target ${tgt_addr} type ${ssh_htype} timeout ${cfg_timeout_ssh}"
-    if ! wait-for-port host=${tgt_addr} timeout=${cfg_timeout_ssh} interval=1 port=22 ; then
+    local timeout=${timeout:-$cfg_timeout_ssh}
+
+    info "Attempting ssh connect to target ${tgt_addr} type ${ssh_htype} timeout ${timeout}"
+    if ! wait-for-port host=${tgt_addr} timeout=${timeout} interval=1 port=22 ; then
 	error "Waiting for SSH to appear"
 	return 1;
     fi
